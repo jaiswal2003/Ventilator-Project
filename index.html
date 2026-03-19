@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VentWean AI — Extubation Readiness Predictor</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">🫁</div>
+  <div>
+    <h1>VentWean AI — Extubation Readiness Predictor</h1>
+    <p>AI-powered Clinical Decision Support System for Mechanical Ventilation Weaning</p>
+  </div>
+</header>
+
+<div class="main">
+  <div class="grid-2">
+
+    <!-- LEFT: INPUT FORM -->
+    <div>
+
+      <!-- Demographics -->
+      <div class="card">
+        <div class="section-title">🧍 Demographics</div>
+        <div class="param-grid">
+          <div class="param-field">
+            <label>Age <span class="unit">(years)</span></label>
+            <input type="number" id="age" value="55" min="18" max="90">
+          </div>
+          <div class="param-field">
+            <label>Sex</label>
+            <select id="sex">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div class="param-field">
+            <label>BMI <span class="unit">(kg/m²)</span></label>
+            <input type="number" id="bmi" value="24" min="16" max="40" step="0.1">
+          </div>
+        </div>
+      </div>
+
+      <!-- Respiratory -->
+      <div class="card">
+        <div class="section-title">🌬️ Respiratory Parameters</div>
+        <div class="param-grid">
+          <div class="param-field">
+            <label>Respiratory Rate <span class="unit">(breaths/min)</span></label>
+            <input type="number" id="rr" value="15" min="10" max="35">
+          </div>
+          <div class="param-field">
+            <label>Tidal Volume <span class="unit">(mL)</span></label>
+            <input type="number" id="vt" value="480" min="300" max="700">
+          </div>
+          <div class="param-field">
+            <label>FiO₂ <span class="unit">(fraction of o₂)</span></label>
+            <input type="number" id="fio2" value="0.40" min="0.21" max="1.0" step="0.01">
+          </div>
+          <div class="param-field">
+            <label>PEEP <span class="unit">(cmH₂O)</span></label>
+            <input type="number" id="peep" value="6" min="0" max="15">
+          </div>
+          <div class="param-field">
+            <label>Pressure Support <span class="unit">(cmH₂O)</span></label>
+            <input type="number" id="ps" value="8" min="0" max="20">
+          </div>
+          <div class="param-field">
+            <label>Minute Ventilation <span class="unit">(L/min)</span></label>
+            <input type="number" id="mv" value="8.5" min="4" max="15" step="0.1">
+          </div>
+        </div>
+      </div>
+
+      <!-- Blood Gas -->
+      <div class="card">
+        <div class="section-title">🧪 Blood Gas Parameters</div>
+        <div class="param-grid">
+          <div class="param-field">
+            <label>PaO₂ <span class="unit">(mmHg)</span></label>
+            <input type="number" id="pao2" value="90" min="60" max="120">
+          </div>
+          <div class="param-field">
+            <label>PaCO₂ <span class="unit">(mmHg)</span></label>
+            <input type="number" id="paco2" value="42" min="35" max="60">
+          </div>
+          <div class="param-field">
+            <label>pH</label>
+            <input type="number" id="ph" value="7.40" min="6.8" max="7.7" step="0.01">
+          </div>
+        </div>
+      </div>
+
+      <!-- Vitals -->
+      <div class="card">
+        <div class="section-title">❤️ Vital Signs</div>
+        <div class="param-grid">
+          <div class="param-field">
+            <label>SpO₂ <span class="unit">(%)</span></label>
+            <input type="number" id="spo2" value="97" min="85" max="100">
+          </div>
+          <div class="param-field">
+            <label>Heart Rate <span class="unit">(bpm)</span></label>
+            <input type="number" id="hr" value="82" min="50" max="140">
+          </div>
+          <div class="param-field">
+            <label>Mean Arterail pressure(MAP) <span class="unit">(mmHg)</span></label>
+            <input type="number" id="map" value="82" min="60" max="110">
+          </div>
+          <div class="param-field">
+            <label>Systolic BP <span class="unit">(mmHg)</span></label>
+            <input type="number" id="sbp" value="118" min="90" max="180">
+          </div>
+        </div>
+      </div>
+
+      <!-- Neuro -->
+      <div class="card">
+        <div class="section-title">🧠 Neurological Status</div>
+        <div class="param-grid">
+          <div class="param-field">
+            <label>GCS <span class="unit">(3–15)</span></label>
+            <input type="number" id="gcs" value="14" min="3" max="15">
+          </div>
+          <div class="param-field">
+            <label>Sedation Score <span class="unit">(RASS, -5 to +2)</span></label>
+            <input type="number" id="rass" value="-1" min="-5" max="2">
+          </div>
+        </div>
+      </div>
+
+      <!-- Labs -->
+      <div class="card">
+        <div class="section-title">🧬 Laboratory Parameters</div>
+        <div class="param-grid">
+          <div class="param-field">
+            <label>Hemoglobin <span class="unit">(g/dL)</span></label>
+            <input type="number" id="hb" value="10.5" min="7" max="18" step="0.1">
+          </div>
+          <div class="param-field">
+            <label>Lactate <span class="unit">(mmol/L)</span></label>
+            <input type="number" id="lactate" value="1.2" min="0.5" max="5" step="0.1">
+          </div>
+          <div class="param-field">
+            <label>WBC <span class="unit">(×10³/µL)</span></label>
+            <input type="number" id="wbc" value="9.5" min="4" max="20" step="0.001">
+          </div>
+        </div>
+      </div>
+
+      <!-- Clinical -->
+      <div class="card">
+        <div class="section-title">🤧 Clinical Observations & Time</div>
+        <div class="param-grid">
+          <div class="param-field">
+            <label>Cough Strength</label>
+            <select id="cough">
+              <option value="Strong">Strong</option>
+              <option value="Moderate">Moderate</option>
+              <option value="Weak">Weak / Absent</option>
+            </select>
+          </div>
+          <div class="param-field">
+            <label>Secretions</label>
+            <select id="secretions">
+              <option value="Low">Minimal</option>
+              <option value="Moderate">Moderate</option>
+              <option value="High">Excessive</option>
+            </select>
+          </div>
+          <div class="param-field">
+            <label>Duration of Ventilation <span class="unit">(days)</span></label>
+            <input type="number" id="duration" value="4" min="0" max="90">
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-predict" onclick="predict()">🔮 Predict Weaning Readiness</button>
+
+    </div>
+
+    <!-- RIGHT: RESULTS -->
+    <div class="result-panel">
+      <div class="card" id="result-card">
+        <div class="placeholder-msg" id="placeholder">
+          <div class="icon">🫁</div>
+          <p>Enter patient parameters on the left and click <strong>Predict</strong> to get the AI-powered weaning readiness assessment.</p>
+        </div>
+
+        <div id="result-content" style="display:none;">
+          <div class="section-title">📊 Prediction Result</div>
+
+          <div class="score-ring">
+            <div class="ring-wrap">
+              <svg width="160" height="160" viewBox="0 0 160 160">
+                <circle cx="80" cy="80" r="65" fill="none" stroke="#1c2230" stroke-width="14"/>
+                <circle cx="80" cy="80" r="65" fill="none" stroke-width="14"
+                  stroke-dasharray="408.41"
+                  stroke-dashoffset="408.41"
+                  stroke-linecap="round"
+                  id="ring-circle"
+                  style="transition: stroke-dashoffset 1.2s ease, stroke 0.5s;"/>
+              </svg>
+              <div class="ring-label">
+                <div class="ring-pct" id="score-pct">—</div>
+                <div class="ring-sub">Success Prob.</div>
+              </div>
+            </div>
+          </div>
+
+          <span class="risk-badge" id="risk-badge">—</span>
+
+          
+
+          <div class="recommendation" id="recommendation">
+            <h3>🩺 Clinical Recommendation</h3>
+            <p id="rec-text">—</p>
+          </div>
+
+          <!-- <div class="section-title" style="margin-top:16px;">⚖️ Key Factor Analysis</div>
+          <ul class="factor-list" id="factor-list"></ul> -->
+
+          <!-- <div class="model-info">
+            <strong>Model:</strong> Ensemble (Logistic Regression + Decision Tree + Random Forest simulation) |
+            <strong>Training basis:</strong> 25-parameter physiological model |
+            <strong>Note:</strong> This tool supports clinical decision-making and does not replace physician judgment.
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script src="scripts.js"></script>
+</body>
+</html>
